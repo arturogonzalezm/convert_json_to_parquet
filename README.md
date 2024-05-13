@@ -63,7 +63,7 @@ Uses Python's built-in logging module with a basic configuration.
 
 **main.py**
 
-### Usage:
+### Usage example:
 
 ```python
 from src.etl_job import ETLJob
