@@ -1,24 +1,31 @@
-name: Codecov
+name: Code Quality and Testing
 
 on:
   push:
     branches:
       - master
-  workflow_run:
-    workflows: ["Codecov"]
-    types:
-      - completed
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.12"]
+        python-version: [ "3.12" ]
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
         run: pip install -r requirements.txt
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          python-version: ${{ matrix.python-version }}
+          environment-file: environment.yml
+          activate-environment: temperature_predictions
+          channels: anaconda, conda-forge
       - name: Run Tests and Generate Coverage Report
         run: |
           pip install coverage pytest-cov
