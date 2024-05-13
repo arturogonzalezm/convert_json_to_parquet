@@ -4,8 +4,8 @@ Create Spark Session Manager class to manage the creation and stopping of Spark 
 
 from pyspark.sql import SparkSession
 
-from src.utilities.custom_exceptions import SparkSessionError
-from src.utilities.logger import log_error
+from .utilities.custom_exceptions import SparkSessionError
+from .utilities.logger import log_error
 
 
 class SparkSessionManager:

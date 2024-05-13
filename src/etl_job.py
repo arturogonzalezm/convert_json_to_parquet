@@ -2,8 +2,8 @@
 This module contains the ETLJob class, which performs ETL (Extract, Transform, Load) operations.
 """
 
-from src.utilities.custom_exceptions import ETLJobError
-from src.utilities.logger import log_error, log_info
+from .utilities.custom_exceptions import ETLJobError
+from .utilities.logger import log_error, log_info
 
 
 class ETLJob:
