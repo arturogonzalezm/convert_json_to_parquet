@@ -16,9 +16,9 @@ custom_exceptions.py
 
 ### Defines two custom exception classes:
 
-*ETLJobError:* Raised when errors occur during the ETL job.
+**ETLJobError:** Raised when errors occur during the ETL job.
 
-*SparkSessionError:* Raised when errors occur related to the Spark session.
+**SparkSessionError:** Raised when errors occur related to the Spark session.
 
 
 Each exception class has attributes for message, stage (for ETLJobError), component (for SparkSessionError), and details.
@@ -29,9 +29,9 @@ logger.py
 
 ### Provides logging functions:
 
-*log_error(message):* Logs an error message.
+**log_error(message):** Logs an error message.
 
-*log_info(message):* Logs an info message.
+**log_info(message):** Logs an info message.
 
 
 ### Uses Python's built-in logging module with a basic configuration.
@@ -43,9 +43,9 @@ spark_session.py
 
 ### Manages the creation and stopping of Spark sessions:
 
-*get_spark_session(app_name):* Creates or retrieves a Spark session.
+**get_spark_session(app_name):** Creates or retrieves a Spark session.
 
-*stop_spark_session():* Stops the current Spark session if it exists.
+**stop_spark_session():** Stops the current Spark session if it exists.
 
 
 ```bash
@@ -54,13 +54,13 @@ etl_job.py
 
 ### Performs ETL operations using PySpark:
 
-*extract_json(spark, input_file_path):* Extracts data from a JSON file.
+**extract_json(spark, input_file_path):** Extracts data from a JSON file.
 
-*transform(df):* Transforms the extracted data by renaming column headers to uppercase.
+**transform(df):** Transforms the extracted data by renaming column headers to uppercase.
 
-*load(df, output_file_path):* Loads the transformed data into a Parquet file.
+**load(df, output_file_path):** Loads the transformed data into a Parquet file.
 
-*run(spark, input_file_path_json, output_file_path_parquet):* Runs the ETL job.
+**run(spark, input_file_path_json, output_file_path_parquet):** Runs the ETL job.
 
 ```bash
 main.py
@@ -74,17 +74,26 @@ Runs the ETL job using ETLJob.
 
 Catches and logs custom exceptions using logger.
 
-## Diagram
+## ETL Job Pipeline
 
 ```mermaid
 graph LR
-  A[Main] -->|create/retrieve|> B[SparkSessionManager]
-  B -->|get spark session|> C[SparkSession]
-  C -->|extract json|> D[ExtractJSON]
-  D -->|transform|> E[Transform]
-  E -->|load parquet|> F[LoadParquet]
-  F -->|stop spark session|> G[StopSparkSession]
-  A -.->|catch exceptions|-.> H[Logger]
-    H -->|log error|> I[Error]
-    H -->|log info|> J[Info]
+    A[Main Script] -->|create/get spark session| B[SparkSessionManager]
+    B -->|getOrCreate SparkSession| C[SparkSession]
+    A -->|run ETL job| D[ETLJob]
+    D -->|extract JSON data| E[extract_json]
+    E -->|transform data| F[transform]
+    F -->|load data into Parquet file| G[load]
+    D -->|log error| H[Logger]
+    B -->|log error| H
+    A -->|stop spark session| I[SparkSessionManager.stop_spark_session]
+
+    classDef default fill:#f9f,stroke:#333,stroke-width:4px;
+    class ETLJob,extract_json,transform,load fill:#cce,stroke:#333,stroke-width:2px;
+    class SparkSessionManager,Logger fill:#ddf,stroke:#333,stroke-width:2px;
 ```
+
+## Conclusion
+
+This project demonstrates a structured approach to building an ETL job using Python, PySpark, and custom exceptions. 
+The code is organised into separate modules for logging, custom exceptions, Spark session management, and the ETL job itself.
