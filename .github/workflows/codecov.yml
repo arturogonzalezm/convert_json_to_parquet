@@ -9,26 +9,26 @@ on:
       - master
 
 jobs:
-  codecov:
+  build:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        python-version: [ "3.12" ]
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
-
       - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run Tests and Generate Coverage Report
         run: |
-          python -m pip install --upgrade pip
-          pip install coverage codecov
-
-      - name: Run tests with coverage
-        run: |
+          pip install coverage pytest-cov
           coverage run -m pytest
-          coverage xml -o coverage.xml
-
-      - name: Upload coverage to Codecov
-        run: codecov -f coverage.xml
+          coverage report
+          coverage xml
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
