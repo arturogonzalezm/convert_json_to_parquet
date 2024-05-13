@@ -9,9 +9,7 @@ The code is organised into separate modules for logging, custom exceptions, Spar
 
 ## Modules Overview
 
-```bash
-custom_exceptions.py
-```
+***custom_exceptions.py***
 
 
 ### Defines two custom exception classes:
@@ -23,9 +21,7 @@ custom_exceptions.py
 
 Each exception class has attributes for message, stage (for ETLJobError), component (for SparkSessionError), and details.
 
-```bash
-logger.py
-```
+**logger.py**
 
 ### Provides logging functions:
 
@@ -37,9 +33,7 @@ logger.py
 ### Uses Python's built-in logging module with a basic configuration.
 
 
-```bash
-spark_session.py
-```
+**spark_session.py**
 
 ### Manages the creation and stopping of Spark sessions:
 
@@ -48,9 +42,7 @@ spark_session.py
 **stop_spark_session():** Stops the current Spark session if it exists.
 
 
-```bash
-etl_job.py
-```
+**etl_job.py**
 
 ### Performs ETL operations using PySpark:
 
@@ -62,9 +54,7 @@ etl_job.py
 
 **run(spark, input_file_path_json, output_file_path_parquet):** Runs the ETL job.
 
-```bash
-main.py
-```
+**main.py**
 
 ### The main script that runs the ETL job:
 
