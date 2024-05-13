@@ -1,0 +1,45 @@
+name: Code Quality and Testing
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.12" ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run Tests and Generate Coverage Report
+        run: |
+          pip install coverage pytest-cov
+          coverage run -m pytest
+          coverage report
+          coverage xml
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+      - name: Code Review Scoring
+        run: find . -name '*.py' -print -exec pylint {} \;
+      - name: Analysing the code with PyLint
+        run: | 
+          pylint $(find . -name '*.py') --fail-under=8.0
