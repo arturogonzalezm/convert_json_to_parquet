@@ -1,20 +1,19 @@
-name: Codecov
+name: Code Quality and Testing
 
 on:
   push:
     branches:
       - master
-  workflow_run:
-    workflows: ["Codecov"]
-    types:
-      - completed
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.12"]
+        python-version: [ "3.12" ]
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
