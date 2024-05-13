@@ -9,7 +9,8 @@ The code is organised into separate modules for logging, custom exceptions, Spar
 
 ## Modules Overview
 
-***custom_exceptions.py***
+---
+**custom_exceptions.py**
 
 
 ### Defines two custom exception classes:
@@ -21,6 +22,8 @@ The code is organised into separate modules for logging, custom exceptions, Spar
 
 Each exception class has attributes for message, stage (for ETLJobError), component (for SparkSessionError), and details.
 
+---
+
 **logger.py**
 
 ### Provides logging functions:
@@ -30,8 +33,9 @@ Each exception class has attributes for message, stage (for ETLJobError), compon
 **log_info(message):** Logs an info message.
 
 
-### Uses Python's built-in logging module with a basic configuration.
+Uses Python's built-in logging module with a basic configuration.
 
+---
 
 **spark_session.py**
 
@@ -41,6 +45,7 @@ Each exception class has attributes for message, stage (for ETLJobError), compon
 
 **stop_spark_session():** Stops the current Spark session if it exists.
 
+---
 
 **etl_job.py**
 
@@ -54,6 +59,8 @@ Each exception class has attributes for message, stage (for ETLJobError), compon
 
 **run(spark, input_file_path_json, output_file_path_parquet):** Runs the ETL job.
 
+---
+
 **main.py**
 
 ### The main script that runs the ETL job:
@@ -63,6 +70,8 @@ Creates or retrieves a Spark session using SparkSessionManager.
 Runs the ETL job using ETLJob.
 
 Catches and logs custom exceptions using logger.
+
+---
 
 ## ETL Job Pipeline
 
