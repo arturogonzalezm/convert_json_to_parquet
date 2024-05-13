@@ -2,7 +2,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://github.com/arturogonzalezm/convert_json_to_parquet/blob/master/LICENSE)
 [![PyLint](https://github.com/arturogonzalezm/convert_json_to_parquet/actions/workflows/workflow.yml/badge.svg)](https://github.com/arturogonzalezm/convert_json_to_parquet/actions/workflows/pylint.yml)
 
-# Convert JSON to Parquet - PySpark
+# Convert JSON to Parquet - PySpark ETL Job submodule
 
 This project demonstrates a structured approach to building an ETL (Extract, Transform, Load) job using Python, PySpark, and custom exceptions. 
 The code is organised into separate modules for logging, custom exceptions, Spark session management, and the ETL job itself.
