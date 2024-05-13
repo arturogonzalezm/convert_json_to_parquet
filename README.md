@@ -63,7 +63,7 @@ Uses Python's built-in logging module with a basic configuration.
 
 **main.py**
 
-### The main script that runs the ETL job:
+### Usage of the ETL job:
 
 Creates or retrieves a Spark session using SparkSessionManager.
 
