@@ -2,7 +2,7 @@
 Main script to run the ETL job.
 """
 
-from src.etl import ETLJob
+from src.etl_job import ETLJob
 from src.spark_session import SparkSessionManager
 from src.utilities.custom_exceptions import SparkSessionError, ETLJobError
 from src.utilities.logger import log_error

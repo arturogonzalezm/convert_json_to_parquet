@@ -1,11 +1,11 @@
 """
-This module contains unit tests for the ETLJob class in src/etl.py
+This module contains unit tests for the ETLJob class in src/etl_job.py
 """
 
 import pytest
 from unittest.mock import MagicMock, patch
 from src.utilities.custom_exceptions import ETLJobError
-from src.etl import ETLJob
+from src.etl_job import ETLJob
 
 
 @pytest.fixture
