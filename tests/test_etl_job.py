@@ -40,7 +40,7 @@ def test_extract_json_success(spark, input_file_path):
     assert data_frame.collect() == expected_data
 
 
-@patch('src.etl.log_error')
+@patch('src.etl_job.log_error')
 def test_extract_json_failure(mock_log_error, spark, input_file_path):
     # Mock data extraction failure
     spark.read.json.side_effect = Exception("Failed to read JSON")
@@ -52,7 +52,7 @@ def test_extract_json_failure(mock_log_error, spark, input_file_path):
     mock_log_error.assert_called_once()
 
 
-@patch('src.etl.log_error')
+@patch('src.etl_job.log_error')
 def test_transform_success(mock_log_error):
     # Mock DataFrame
     mock_df = MagicMock()
@@ -70,7 +70,7 @@ def test_transform_success(mock_log_error):
     mock_log_error.assert_not_called()
 
 
-@patch('src.etl.log_error')
+@patch('src.etl_job.log_error')
 def test_transform_failure(mock_log_error):
     # Mock DataFrame
     mock_df = MagicMock()
@@ -89,8 +89,8 @@ def test_transform_failure(mock_log_error):
     mock_log_error.assert_called_once()
 
 
-@patch('src.etl.log_error')
-@patch('src.etl.log_info')
+@patch('src.etl_job.log_error')
+@patch('src.etl_job.log_info')
 def test_load_success(mock_log_info, mock_log_error):
     # Mock DataFrame
     mock_df = MagicMock()
@@ -104,8 +104,8 @@ def test_load_success(mock_log_info, mock_log_error):
     mock_log_error.assert_not_called()
 
 
-@patch('src.etl.log_error')
-@patch('src.etl.log_info')
+@patch('src.etl_job.log_error')
+@patch('src.etl_job.log_info')
 def test_load_failure(mock_log_info, mock_log_error):
     # Mock DataFrame
     mock_df = MagicMock()
@@ -123,11 +123,11 @@ def test_load_failure(mock_log_info, mock_log_error):
     mock_log_info.assert_not_called()
 
 
-@patch('src.etl.ETLJob.extract_json')
-@patch('src.etl.ETLJob.transform')
-@patch('src.etl.ETLJob.load')
-@patch('src.etl.log_info')
-@patch('src.etl.log_error')
+@patch('src.etl_job.ETLJob.extract_json')
+@patch('src.etl_job.ETLJob.transform')
+@patch('src.etl_job.ETLJob.load')
+@patch('src.etl_job.log_info')
+@patch('src.etl_job.log_error')
 def test_run_success(mock_log_error, mock_log_info, mock_load, mock_transform, mock_extract_json):
     # Mock objects
     spark = MagicMock()
@@ -151,11 +151,11 @@ def test_run_success(mock_log_error, mock_log_info, mock_load, mock_transform, m
     mock_log_error.assert_not_called()
 
 
-@patch('src.etl.ETLJob.extract_json')
-@patch('src.etl.ETLJob.transform')
-@patch('src.etl.ETLJob.load')
-@patch('src.etl.log_info')
-@patch('src.etl.log_error')
+@patch('src.etl_job.ETLJob.extract_json')
+@patch('src.etl_job.ETLJob.transform')
+@patch('src.etl_job.ETLJob.load')
+@patch('src.etl_job.log_info')
+@patch('src.etl_job.log_error')
 def test_run_failure(mock_log_error, mock_log_info, mock_load, mock_transform, mock_extract_json):
     # Mock objects
     spark = MagicMock()
