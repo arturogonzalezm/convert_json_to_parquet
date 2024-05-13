@@ -7,9 +7,9 @@
 This project demonstrates a structured approach to building an ETL (Extract, Transform, Load) job using Python, PySpark, and custom exceptions. 
 The code is organised into separate modules for logging, custom exceptions, Spark session management, and the ETL job itself.
 
-## Modules Overview ##
+## Modules Overview
 
----
+
 **custom_exceptions.py**
 
 
