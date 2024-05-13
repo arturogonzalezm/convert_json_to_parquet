@@ -48,6 +48,43 @@ def test_extract_json_failure(mock_log_error, spark, input_file_path):
     mock_log_error.assert_called_once()
 
 
+@patch('src.etl.log_error')
+def test_transform_success(mock_log_error):
+    # Mock DataFrame
+    mock_df = MagicMock()
+    mock_df.columns = ['col1', 'col2']
+
+    # Call transform method
+    transformed_df = ETLJob.transform(mock_df)
+
+    # Assert that toDF was called with the correct arguments
+    mock_df.toDF.assert_called_once_with('COL1', 'COL2')
+
+    # Assert that the transformed DataFrame is returned
+    assert transformed_df == mock_df.toDF.return_value
+
+    mock_log_error.assert_not_called()
+
+
+@patch('src.etl.log_error')
+def test_transform_failure(mock_log_error):
+    # Mock DataFrame
+    mock_df = MagicMock()
+    mock_df.columns = ['col1', 'col2']
+
+    # Set side effect for toDF to simulate an exception
+    mock_df.toDF.side_effect = Exception("Failed to transform data")
+
+    # Call transform method and expect ETLJobError
+    with pytest.raises(ETLJobError):
+        ETLJob.transform(mock_df)
+
+    # Assert that toDF was called with the correct arguments
+    mock_df.toDF.assert_called_once_with('COL1', 'COL2')
+
+    mock_log_error.assert_called_once()
+
+
 @patch('src.etl.ETLJob.extract_json')
 @patch('src.etl.ETLJob.transform')
 @patch('src.etl.ETLJob.load')
