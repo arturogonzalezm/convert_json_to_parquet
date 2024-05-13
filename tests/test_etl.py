@@ -85,6 +85,40 @@ def test_transform_failure(mock_log_error):
     mock_log_error.assert_called_once()
 
 
+@patch('src.etl.log_error')
+@patch('src.etl.log_info')
+def test_load_success(mock_log_info, mock_log_error):
+    # Mock DataFrame
+    mock_df = MagicMock()
+
+    # Call load method
+    ETLJob.load(mock_df, "data/output/test.parquet")
+
+    # Assert that write.parquet was called with the correct arguments
+    mock_df.write.parquet.assert_called_once_with("data/output/test.parquet")
+    mock_log_info.assert_called_once()
+    mock_log_error.assert_not_called()
+
+
+@patch('src.etl.log_error')
+@patch('src.etl.log_info')
+def test_load_failure(mock_log_info, mock_log_error):
+    # Mock DataFrame
+    mock_df = MagicMock()
+
+    # Set side effect for write.parquet to simulate an exception
+    mock_df.write.parquet.side_effect = Exception("Failed to write parquet file")
+
+    # Call load method and expect ETLJobError
+    with pytest.raises(ETLJobError):
+        ETLJob.load(mock_df, "data/output/test.parquet")
+
+    # Assert that write.parquet was called with the correct arguments
+    mock_df.write.parquet.assert_called_once_with("data/output/test.parquet")
+    mock_log_error.assert_called_once()
+    mock_log_info.assert_not_called()
+
+
 @patch('src.etl.ETLJob.extract_json')
 @patch('src.etl.ETLJob.transform')
 @patch('src.etl.ETLJob.load')
