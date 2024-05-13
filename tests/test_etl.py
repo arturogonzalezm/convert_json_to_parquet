@@ -46,3 +46,57 @@ def test_extract_json_failure(mock_log_error, spark, input_file_path):
         ETLJob.extract_json(spark, input_file_path)
 
     mock_log_error.assert_called_once()
+
+
+@patch('src.etl.ETLJob.extract_json')
+@patch('src.etl.ETLJob.transform')
+@patch('src.etl.ETLJob.load')
+@patch('src.etl.log_info')
+@patch('src.etl.log_error')
+def test_run_success(mock_log_error, mock_log_info, mock_load, mock_transform, mock_extract_json):
+    # Mock objects
+    spark = MagicMock()
+    input_file_path_json = "data/input/test.json"
+    output_file_path_parquet = "data/output/test.parquet"
+    mock_df = MagicMock()
+
+    # Set return values for mocked methods
+    mock_extract_json.return_value = mock_df
+    mock_transform.return_value = mock_df
+
+    # Call run method
+    ETLJob.run(spark, input_file_path_json, output_file_path_parquet)
+
+    # Assert that extract_json, transform, and load were called with the correct arguments
+    mock_extract_json.assert_called_once_with(spark, input_file_path_json)
+    mock_transform.assert_called_once_with(mock_df)
+    mock_load.assert_called_once_with(mock_df, output_file_path_parquet)
+    mock_log_info.assert_called_once_with(
+        f"Data successfully read from {input_file_path_json} and written to {output_file_path_parquet}")
+    mock_log_error.assert_not_called()
+
+
+@patch('src.etl.ETLJob.extract_json')
+@patch('src.etl.ETLJob.transform')
+@patch('src.etl.ETLJob.load')
+@patch('src.etl.log_info')
+@patch('src.etl.log_error')
+def test_run_failure(mock_log_error, mock_log_info, mock_load, mock_transform, mock_extract_json):
+    # Mock objects
+    spark = MagicMock()
+    input_file_path_json = "data/input/test.json"
+    output_file_path_parquet = "data/output/test.parquet"
+
+    # Set side effect for extract_json to simulate an exception
+    mock_extract_json.side_effect = Exception("Failed to extract JSON")
+
+    # Call run method and expect ETLJobError
+    with pytest.raises(ETLJobError):
+        ETLJob.run(spark, input_file_path_json, output_file_path_parquet)
+
+    # Assert that extract_json was called with the correct arguments
+    mock_extract_json.assert_called_once_with(spark, input_file_path_json)
+    mock_transform.assert_not_called()
+    mock_load.assert_not_called()
+    mock_log_info.assert_not_called()
+    mock_log_error.assert_called_once()
